@@ -29,15 +29,14 @@
 (defn get-row-num
   "Returns row on which cell is located."
   [cell size]
-  ; TODO
-  )
+  (inc (quot (dec cell) size)))
 
 
 (defn get-col-num
   "Return col on which cell is located."
-  [col size]
-  ; TODO
-  )
+  [cell size]
+  (let [row-num (get-row-num cell size)]
+    (- cell (- (* size row-num) size))))
 
 
 (defn get-row
