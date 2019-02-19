@@ -43,14 +43,34 @@
     (range col end size)))
 
 
+(defn get-lr-diag
+  "Diagonal from top left to bottom right."
+  [size]
+  (range 0 (* size size) (inc size)))
+
+
+(defn get-rl-diag
+  "Diagonal from top right to bottom left"
+  [size]
+  (range (dec size) (dec (* size size)) (dec size)))
+
+
 (defn gen-board
   "Creates a game board with equal number of rows and cols."
   [size]
-  (reduce (fn [board pos]
-            (into board {pos [(get-row (get-row-num pos size) size)
-                              (get-col (get-col-num pos size) size)]}))
-          {}
-          (range (* size size))))
+  (let [lr-diag (get-lr-diag size)
+        rl-diag (get-rl-diag size)]
+    (reduce (fn [board cell]
+              (let [row-num (get-row-num cell size)
+                    col-num (get-col-num cell size)]
+                (into board {cell [(get-row row-num size)
+                                   (get-col col-num size)
+                                   (when (= row-num col-num)
+                                     lr-diag)
+                                   (when (= (+ row-num col-num) (dec size))
+                                     rl-diag)]})))
+            {}
+            (range (* size size)))))
 
 
 (defn -main

@@ -26,25 +26,41 @@
 
     (is (= (map get-col-num (range 16) (repeat 4))
            '(0 1 2 3 0 1 2 3 0 1 2 3 0 1 2 3))
-        "Getting col number for every cell of the 4x4 board"))
+        "Getting col number for every cell of the 4x4 board")
+
+    (is (= (get-lr-diag 3)
+           '(0 4 8))
+        "Getting top left to bottom right diagonal of the 3x3 board")
+
+    (is (= (get-lr-diag 4)
+           '(0 5 10 15))
+        "Getting top left to bottom right diagonal of the 4x4 board")
+
+    (is (= (get-rl-diag 3)
+           '(2 4 6))
+        "Getting top right to bottom left diagonal of the 3x3 board")
+
+    (is (= (get-rl-diag 4)
+           '(3 6 9 12))
+        "Getting top right to bottom left diagonal of the 4x4 board"))
 
   (testing "Testing board generation"
     (is (= (gen-board 2)
-           '{0 [(0 1) (0 2)]
-             1 [(0 1) (1 3)]
-             2 [(2 3) (0 2)]
-             3 [(2 3) (1 3)]})
+           '{0 [(0 1) (0 2) (0 3) nil]
+             1 [(0 1) (1 3) nil (1 2)]
+             2 [(2 3) (0 2) nil (1 2)]
+             3 [(2 3) (1 3) (0 3) nil]})
         "Generating 2x2 board")
 
     (is (= (gen-board 3)
-           '{0 [(0 1 2) (0 3 6)]
-             1 [(0 1 2) (1 4 7)]
-             2 [(0 1 2) (2 5 8)]
-             3 [(3 4 5) (0 3 6)]
-             4 [(3 4 5) (1 4 7)]
-             5 [(3 4 5) (2 5 8)]
-             6 [(6 7 8) (0 3 6)]
-             7 [(6 7 8) (1 4 7)]
-             8 [(6 7 8) (2 5 8)]})
+           '{0 [(0 1 2) (0 3 6) (0 4 8) nil]
+             1 [(0 1 2) (1 4 7) nil nil]
+             2 [(0 1 2) (2 5 8) nil (2 4 6)]
+             3 [(3 4 5) (0 3 6) nil nil]
+             4 [(3 4 5) (1 4 7) (0 4 8) (2 4 6)]
+             5 [(3 4 5) (2 5 8) nil nil]
+             6 [(6 7 8) (0 3 6) nil (2 4 6)]
+             7 [(6 7 8) (1 4 7) nil nil]
+             8 [(6 7 8) (2 5 8) (0 4 8) nil]})
         "Generating 3x3 board")))
 
