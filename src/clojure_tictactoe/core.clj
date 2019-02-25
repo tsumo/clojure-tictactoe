@@ -60,18 +60,18 @@
   [size]
   (let [lr-diag (get-lr-diag size)
         rl-diag (get-rl-diag size)]
-    (reduce (fn [board cell]
-              (let [row-num (get-row-num cell size)
-                    col-num (get-col-num cell size)]
-                (into board {cell {:char nil
-                                   :paths [(get-row row-num size)
-                                           (get-col col-num size)
-                                           (when (= row-num col-num)
-                                             lr-diag)
-                                           (when (= (+ row-num col-num) (dec size))
-                                             rl-diag)]}})))
-            {}
-            (range (* size size)))))
+    {:size size
+     :cells (map (fn [cell]
+                   (let [row-num (get-row-num cell size)
+                         col-num (get-col-num cell size)]
+                     {:player nil
+                      :paths [(get-row row-num size)
+                              (get-col col-num size)
+                              (when (= row-num col-num)
+                                lr-diag)
+                              (when (= (+ row-num col-num) (dec size))
+                                rl-diag)]}))
+                 (range (* size size)))}))
 
 
 (defn -main

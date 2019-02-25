@@ -46,34 +46,36 @@
 
   (testing "Testing board generation"
     (is (= (gen-board 2)
-           '{0 {:char nil
-                :paths [(0 1) (0 2) (0 3) nil]}
-             1 {:char nil
-                :paths [(0 1) (1 3) nil (1 2)]}
-             2 {:char nil
-                :paths [(2 3) (0 2) nil (1 2)]}
-             3 {:char nil
-                :paths [(2 3) (1 3) (0 3) nil]}})
+           '{:size 2
+             :cells [{:player nil
+                      :paths [(0 1) (0 2) (0 3) nil]}
+                     {:player nil
+                      :paths [(0 1) (1 3) nil (1 2)]}
+                     {:player nil
+                      :paths [(2 3) (0 2) nil (1 2)]}
+                     {:player nil
+                      :paths [(2 3) (1 3) (0 3) nil]}]})
         "Generating 2x2 board")
 
     (is (= (gen-board 3)
-           '{0 {:char nil
-                :paths [(0 1 2) (0 3 6) (0 4 8) nil]}
-             1 {:char nil
-                :paths [(0 1 2) (1 4 7) nil nil]}
-             2 {:char nil
-                :paths [(0 1 2) (2 5 8) nil (2 4 6)]}
-             3 {:char nil
-                :paths [(3 4 5) (0 3 6) nil nil]}
-             4 {:char nil
-                :paths [(3 4 5) (1 4 7) (0 4 8) (2 4 6)]}
-             5 {:char nil
-                :paths [(3 4 5) (2 5 8) nil nil]}
-             6 {:char nil
-                :paths [(6 7 8) (0 3 6) nil (2 4 6)]}
-             7 {:char nil
-                :paths [(6 7 8) (1 4 7) nil nil]}
-             8 {:char nil
-                :paths [(6 7 8) (2 5 8) (0 4 8) nil]}})
+           '{:size 3
+             :cells [{:player nil
+                      :paths [(0 1 2) (0 3 6) (0 4 8) nil]}
+                     {:player nil
+                      :paths [(0 1 2) (1 4 7) nil nil]}
+                     {:player nil
+                      :paths [(0 1 2) (2 5 8) nil (2 4 6)]}
+                     {:player nil
+                      :paths [(3 4 5) (0 3 6) nil nil]}
+                     {:player nil
+                      :paths [(3 4 5) (1 4 7) (0 4 8) (2 4 6)]}
+                     {:player nil
+                      :paths [(3 4 5) (2 5 8) nil nil]}
+                     {:player nil
+                      :paths [(6 7 8) (0 3 6) nil (2 4 6)]}
+                     {:player nil
+                      :paths [(6 7 8) (1 4 7) nil nil]}
+                     {:player nil
+                      :paths [(6 7 8) (2 5 8) (0 4 8) nil]}]})
         "Generating 3x3 board")))
 
