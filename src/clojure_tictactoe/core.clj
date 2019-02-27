@@ -74,7 +74,14 @@
                  (range (* size size)))}))
 
 
+(defn get-board-chars
+  "Extracts printable part of the board"
+  [board]
+  (map :player (:cells board)))
+
+
 (defn print-row
+  "Print single row of board cells"
   [row]
   (let [size (count row)]
     (dorun (map print (repeat size "+---+ ")))
@@ -88,12 +95,11 @@
 
 
 (defn print-board
+  "Prints full board"
   [board]
   (map print-row
        (partition (:size board)
-                  (map (fn [cell]
-                         (:player cell))
-                       (:cells board)))))
+                  (get-board-chars board))))
 
 
 (defn -main
