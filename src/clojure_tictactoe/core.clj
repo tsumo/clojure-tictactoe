@@ -64,7 +64,7 @@
      :cells (map (fn [cell]
                    (let [row-num (get-row-num cell size)
                          col-num (get-col-num cell size)]
-                     {:player nil
+                     {:player \space
                       :paths [(get-row row-num size)
                               (get-col col-num size)
                               (when (= row-num col-num)

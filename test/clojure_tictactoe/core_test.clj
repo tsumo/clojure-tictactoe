@@ -47,35 +47,35 @@
   (testing "Testing board generation"
     (is (= (gen-board 2)
            '{:size 2
-             :cells [{:player nil
+             :cells [{:player \space
                       :paths [(0 1) (0 2) (0 3) nil]}
-                     {:player nil
+                     {:player \space
                       :paths [(0 1) (1 3) nil (1 2)]}
-                     {:player nil
+                     {:player \space
                       :paths [(2 3) (0 2) nil (1 2)]}
-                     {:player nil
+                     {:player \space
                       :paths [(2 3) (1 3) (0 3) nil]}]})
         "Generating 2x2 board")
 
     (is (= (gen-board 3)
            '{:size 3
-             :cells [{:player nil
+             :cells [{:player \space
                       :paths [(0 1 2) (0 3 6) (0 4 8) nil]}
-                     {:player nil
+                     {:player \space
                       :paths [(0 1 2) (1 4 7) nil nil]}
-                     {:player nil
+                     {:player \space
                       :paths [(0 1 2) (2 5 8) nil (2 4 6)]}
-                     {:player nil
+                     {:player \space
                       :paths [(3 4 5) (0 3 6) nil nil]}
-                     {:player nil
+                     {:player \space
                       :paths [(3 4 5) (1 4 7) (0 4 8) (2 4 6)]}
-                     {:player nil
+                     {:player \space
                       :paths [(3 4 5) (2 5 8) nil nil]}
-                     {:player nil
+                     {:player \space
                       :paths [(6 7 8) (0 3 6) nil (2 4 6)]}
-                     {:player nil
+                     {:player \space
                       :paths [(6 7 8) (1 4 7) nil nil]}
-                     {:player nil
+                     {:player \space
                       :paths [(6 7 8) (2 5 8) (0 4 8) nil]}]})
         "Generating 3x3 board")))
 
