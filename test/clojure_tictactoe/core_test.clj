@@ -77,5 +77,18 @@
                       :paths [(6 7 8) (1 4 7) nil nil]}
                      {:player \space
                       :paths [(6 7 8) (2 5 8) (0 4 8) nil]}]})
-        "Generating 3x3 board")))
+        "Generating 3x3 board"))
+
+  (testing "Testing board printing"
+    (is (= (with-out-str (print-row [\X \space \O]))
+           "+---+ +---+ +---+ \n| X | |   | | O | \n+---+ +---+ +---+ \n")
+        "Printing single row")
+
+    (is (= (with-out-str (print-board [\X \O \space \X \O \X \space \O \X]))
+           (with-out-str
+             (str
+               "+---+ +---+ +---+ \n| X | | O | |   | \n+---+ +---+ +---+ \n"
+               "+---+ +---+ +---+ \n| X | | O | | X | \n+---+ +---+ +---+ \n"
+               "+---+ +---+ +---+ \n|   | | O | | X | \n+---+ +---+ +---+ \n")))
+        "Printing full board")))
 
