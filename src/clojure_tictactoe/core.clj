@@ -74,6 +74,28 @@
                  (range (* size size)))}))
 
 
+(defn print-row
+  [row]
+  (let [size (count row)]
+    (dorun (map print (repeat size "+---+ ")))
+    (println)
+    (dorun (map (fn [ch]
+           (print (str "| " ch " | ")))
+         row))
+    (println)
+    (dorun (map print (repeat size "+---+ ")))
+    (println)))
+
+
+(defn print-board
+  [board]
+  (map print-row
+       (partition (:size board)
+                  (map (fn [cell]
+                         (:player cell))
+                       (:cells board)))))
+
+
 (defn -main
   [& args]
   (println "Hello from main"))
