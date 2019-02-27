@@ -80,29 +80,50 @@
   (map :player (:cells board)))
 
 
-(defn print-row
-  "Print single row of board cells"
+(defn count-board-chars
+  "Returns number of moves made on the board"
+  [board]
+  (count (filter #(not= % \space)
+                 (get-board-chars board))))
+
+
+(defn no-more-moves?
+  "Is every cell on the board occupied?"
+  [board]
+  (let [size (:size board)
+        cells (* size size)]
+    (> (rand 1) 0.9) ; temporary
+    #_(= (count-board-chars board) (* size size))))
+
+
+(defn get-row-string
+  "Printable representation of a single row of the board"
   [row]
   (let [size (count row)]
-    (dorun (map print (repeat size "+---+ ")))
-    (println)
-    (dorun (map (fn [ch]
-           (print (str "| " ch " | ")))
-         row))
-    (println)
-    (dorun (map print (repeat size "+---+ ")))
-    (println)))
+    (apply str
+           (concat
+             (repeat size "+---+ ") [\newline]
+             (map #(str "| " % " | ") row) [\newline]
+             (repeat size "+---+ ") [\newline]))))
 
 
-(defn print-board
-  "Prints full board"
+(defn get-board-string
+  "Printable representation of the full board"
   [board]
-  (map print-row
-       (partition (:size board)
-                  (get-board-chars board))))
+  (apply str
+         (map get-row-string
+              (partition (:size board)
+                         (get-board-chars board)))))
 
 
 (defn -main
-  [& args]
-  (println "Hello from main"))
+  [size]
+  (println "Welcome to tic-tac-toe!")
+  (loop [move nil
+         board (gen-board size)]
+    (when-not (no-more-moves? board)
+      (print (get-board-string board))
+      (print "Select a cell: ")
+      (flush)
+      (recur (read-line) board))))
 

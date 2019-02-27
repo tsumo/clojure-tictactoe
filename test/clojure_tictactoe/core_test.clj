@@ -80,15 +80,14 @@
         "Generating 3x3 board"))
 
   (testing "Testing board printing"
-    (is (= (with-out-str (print-row [\X \space \O]))
+    (is (= (get-row-string [\X \space \O])
            "+---+ +---+ +---+ \n| X | |   | | O | \n+---+ +---+ +---+ \n")
         "Printing single row")
 
-    (is (= (with-out-str (print-board [\X \O \space \X \O \X \space \O \X]))
-           (with-out-str
-             (str
-               "+---+ +---+ +---+ \n| X | | O | |   | \n+---+ +---+ +---+ \n"
-               "+---+ +---+ +---+ \n| X | | O | | X | \n+---+ +---+ +---+ \n"
-               "+---+ +---+ +---+ \n|   | | O | | X | \n+---+ +---+ +---+ \n")))
+    (is (= (get-board-string (gen-board 3))
+           (str
+             "+---+ +---+ +---+ \n|   | |   | |   | \n+---+ +---+ +---+ \n"
+             "+---+ +---+ +---+ \n|   | |   | |   | \n+---+ +---+ +---+ \n"
+             "+---+ +---+ +---+ \n|   | |   | |   | \n+---+ +---+ +---+ \n"))
         "Printing full board")))
 
