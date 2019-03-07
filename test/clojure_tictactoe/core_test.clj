@@ -42,52 +42,81 @@
 
     (is (= (get-rl-diag 4)
            '(3 6 9 12))
-        "Getting top right to bottom left diagonal of the 4x4 board"))
+        "Getting top right to bottom left diagonal of the 4x4 board")
+
+    (is (= (indexes-to-cells [0 3 1 2] [\X \O \X \O])
+           [\X \O \O \X])
+        "Retrieving cell values")
+
+    ; (is (= (get-board-paths [\X \O \X \O])
+    ;        '[(0 1) (2 3) (0 2) (1 3) (0 3) (1 2)]))
+    )
+
 
   (testing "Testing board generation"
     (is (= (gen-board 2)
-           '{:size 2
-             :cells [{:player \space
-                      :paths [(0 1) (0 2) (0 3) nil]}
-                     {:player \space
-                      :paths [(0 1) (1 3) nil (1 2)]}
-                     {:player \space
-                      :paths [(2 3) (0 2) nil (1 2)]}
-                     {:player \space
-                      :paths [(2 3) (1 3) (0 3) nil]}]})
+           [nil nil nil nil])
         "Generating 2x2 board")
 
     (is (= (gen-board 3)
-           '{:size 3
-             :cells [{:player \space
-                      :paths [(0 1 2) (0 3 6) (0 4 8) nil]}
-                     {:player \space
-                      :paths [(0 1 2) (1 4 7) nil nil]}
-                     {:player \space
-                      :paths [(0 1 2) (2 5 8) nil (2 4 6)]}
-                     {:player \space
-                      :paths [(3 4 5) (0 3 6) nil nil]}
-                     {:player \space
-                      :paths [(3 4 5) (1 4 7) (0 4 8) (2 4 6)]}
-                     {:player \space
-                      :paths [(3 4 5) (2 5 8) nil nil]}
-                     {:player \space
-                      :paths [(6 7 8) (0 3 6) nil (2 4 6)]}
-                     {:player \space
-                      :paths [(6 7 8) (1 4 7) nil nil]}
-                     {:player \space
-                      :paths [(6 7 8) (2 5 8) (0 4 8) nil]}]})
+           [nil nil nil nil nil nil nil nil nil])
         "Generating 3x3 board"))
 
+
+  (testing "Testing game manipulations"
+    (is (= (next-player \X)
+           \O))
+
+    (is (= (next-player \O)
+           \X))
+
+    (is (= (no-more-moves? (gen-board 3))
+           false)
+        "New boards always have moves")
+
+    (is (= (no-more-moves? [\X \O \X \O \X \O \X \O \X])
+           true)
+        "Fully occupied board have no moves")
+
+    (is (= (make-move 3 \O (make-move 5 \X (gen-board 3)))
+           [nil nil nil \O nil \X nil nil nil])
+        "Two moves on the empty board")
+
+    (is (= (same-player? [nil nil nil])
+           false)
+        "nil is not a player")
+
+    (is (= (same-player? [nil nil \O])
+           false)
+        "Path is not fully filled")
+
+    (is (= (same-player? [\O \X \O])
+           false)
+        "Not the same player")
+
+    (is (= (same-player? [\X \X \X])
+           \X)
+        "Fuly filled path returns a player"))
+
+
   (testing "Testing board printing"
-    (is (= (get-row-string [\X \space \O])
-           "+---+ +---+ +---+ \n| X | |   | | O | \n+---+ +---+ +---+ \n")
+    (is (= (get-row-string [\X nil \O])
+           (str
+             "+---+ +---+ +---+ \n"
+             "| X | |   | | O | \n"
+             "+---+ +---+ +---+ \n"))
         "Printing single row")
 
     (is (= (get-board-string (gen-board 3))
            (str
-             "+---+ +---+ +---+ \n|   | |   | |   | \n+---+ +---+ +---+ \n"
-             "+---+ +---+ +---+ \n|   | |   | |   | \n+---+ +---+ +---+ \n"
-             "+---+ +---+ +---+ \n|   | |   | |   | \n+---+ +---+ +---+ \n"))
+             "+---+ +---+ +---+ \n"
+             "|   | |   | |   | \n"
+             "+---+ +---+ +---+ \n"
+             "+---+ +---+ +---+ \n"
+             "|   | |   | |   | \n"
+             "+---+ +---+ +---+ \n"
+             "+---+ +---+ +---+ \n"
+             "|   | |   | |   | \n"
+             "+---+ +---+ +---+ \n"))
         "Printing full board")))
 

@@ -16,6 +16,12 @@
 ;;; 15 16 17 18 19
 ;;; 20 21 22 23 24
 
+(defn gen-board
+  "Creates a game board with equal number of rows and cols."
+  [size]
+  (vec (repeat (* size size) nil)))
+
+
 (defn get-row-num
   "Returns row on which cell is located."
   [cell size]
@@ -55,55 +61,38 @@
   (range (dec size) (dec (* size size)) (dec size)))
 
 
-(defn gen-board
-  "Creates a game board with equal number of rows and cols."
-  [size]
-  (let [lr-diag (get-lr-diag size)
-        rl-diag (get-rl-diag size)]
-    {:size size
-     :cells (map (fn [cell]
-                   (let [row-num (get-row-num cell size)
-                         col-num (get-col-num cell size)]
-                     {:player \space
-                      :paths [(get-row row-num size)
-                              (get-col col-num size)
-                              (when (= row-num col-num)
-                                lr-diag)
-                              (when (= (+ row-num col-num) (dec size))
-                                rl-diag)]}))
-                 (range (* size size)))}))
+(defn indexes-to-cells
+  "Returns actual values of cells by their indexes"
+  [idx cells]
+  (map #(nth cells %)
+       idx))
 
 
-(defn get-board-chars
-  "Extracts printable part of the board"
+(defn get-board-paths
+  "All rows, columns and diagonals of the board"
   [board]
-  (map :player (:cells board)))
-
-
-(defn count-board-chars
-  "Returns number of moves made on the board"
-  [board]
-  (count (filter #(not= % \space)
-                 (get-board-chars board))))
+  (let [size (count board)
+        width (int (Math/sqrt size))]
+    ; TODO
+    [(indexes-to-cells )])
+  )
 
 
 (defn no-more-moves?
   "Is every cell on the board occupied?"
   [board]
-  (let [size (:size board)
-        cells (* size size)]
-    (> (rand 1) 0.9) ; temporary
-    #_(= (count-board-chars board) (* size size))))
+  (every? identity board))
 
 
 (defn get-row-string
   "Printable representation of a single row of the board"
   [row]
-  (let [size (count row)]
+  (let [size (count row)
+        print-row (map #(if (= % nil) \space %) row)]
     (apply str
            (concat
              (repeat size "+---+ ") [\newline]
-             (map #(str "| " % " | ") row) [\newline]
+             (map #(str "| " % " | ") print-row) [\newline]
              (repeat size "+---+ ") [\newline]))))
 
 
@@ -112,18 +101,61 @@
   [board]
   (apply str
          (map get-row-string
-              (partition (:size board)
-                         (get-board-chars board)))))
+              (partition (int (Math/sqrt (count board)))
+                         board))))
+
+
+(defn next-player
+  "Returns the next player char"
+  [player]
+  (if (= player \X) \O \X))
+
+
+; (defn replace-nth
+;   "Replaces nth element of the lazy seq"
+;   [coll n new-value]
+;   (concat (take n coll)
+;           (list new-value)
+;           (nthnext coll (inc n))))
+
+
+(defn make-move
+  "Marks player move on the nth cell"
+  [n player board]
+  (assoc board n player))
+
+
+(defn same-player?
+  "Is this path completely filled by one player?"
+  [path]
+  (if (some nil? path)
+    false
+    (let [player (first path)]
+      (if (every? #(= player %) path)
+        player
+        false))))
+
+
+; (defn win?
+;   "Does this board have a winning path?"
+;   [board]
+;   (some win-cell? (:paths board)))
 
 
 (defn -main
   [size]
   (println "Welcome to tic-tac-toe!")
-  (loop [move nil
+  (loop [n nil
+         player \X
          board (gen-board size)]
-    (when-not (no-more-moves? board)
-      (print (get-board-string board))
-      (print "Select a cell: ")
-      (flush)
-      (recur (read-line) board))))
+    (let [new-board (if n
+                      (make-move n player board)
+                      board)]
+      (print (get-board-string new-board))
+      (when-not (no-more-moves? new-board)
+        (print (str "Player " (next-player player) ". Select a cell: "))
+        (flush)
+        (recur (read-string (read-line))
+               (next-player player)
+               new-board)))))
 
