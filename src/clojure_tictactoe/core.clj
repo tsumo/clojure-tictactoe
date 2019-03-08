@@ -1,5 +1,4 @@
-(ns clojure-tictactoe.core
-  (:gen-class))
+(ns clojure-tictactoe.core)
 
 ;;; 0 1 2
 ;;; 3 4 5
@@ -22,6 +21,20 @@
   (vec (repeat (* size size) nil)))
 
 
+(defn get-row
+  "Indexes of the nth row of the board."
+  [row size]
+  (let [start (* row size)]
+    (range start (+ start size))))
+
+
+(defn get-col
+  "Indexes of the nth column of the board."
+  [col size]
+  (let [end (+ col (* size size))]
+    (range col end size)))
+
+
 (defn get-row-num
   "Returns row on which cell is located."
   [cell size]
@@ -35,47 +48,41 @@
     (- cell (* size row-num))))
 
 
-(defn get-row
-  "Nth row of the board."
-  [row size]
-  (let [start (* row size)]
-    (range start (+ start size))))
-
-
-(defn get-col
-  "Nth column of the board."
-  [col size]
-  (let [end (+ col (* size size))]
-    (range col end size)))
-
-
 (defn get-lr-diag
-  "Diagonal from top left to bottom right."
+  "Indexes of the diagonal from top left to bottom right."
   [size]
   (range 0 (* size size) (inc size)))
 
 
 (defn get-rl-diag
-  "Diagonal from top right to bottom left"
+  "Indexes of the diagonal from top right to bottom left"
   [size]
   (range (dec size) (dec (* size size)) (dec size)))
 
 
+(defn get-board-size
+  "Get board size (width) from board"
+  [board]
+  (int (Math/sqrt (count board))))
+
+
 (defn indexes-to-cells
   "Returns actual values of cells by their indexes"
-  [idx cells]
-  (map #(nth cells %)
+  [idx board]
+  (map #(nth board %)
        idx))
 
 
 (defn get-board-paths
   "All rows, columns and diagonals of the board"
   [board]
-  (let [size (count board)
-        width (int (Math/sqrt size))]
-    ; TODO
-    [(indexes-to-cells )])
-  )
+  (let [size (get-board-size board)]
+    (map #(indexes-to-cells % board)
+         (concat
+           (map #(get-row % size) (range size))
+           (map #(get-col % size) (range size))
+           (list (get-lr-diag size))
+           (list (get-rl-diag size))))))
 
 
 (defn no-more-moves?
@@ -84,39 +91,16 @@
   (every? identity board))
 
 
-(defn get-row-string
-  "Printable representation of a single row of the board"
-  [row]
-  (let [size (count row)
-        print-row (map #(if (= % nil) \space %) row)]
-    (apply str
-           (concat
-             (repeat size "+---+ ") [\newline]
-             (map #(str "| " % " | ") print-row) [\newline]
-             (repeat size "+---+ ") [\newline]))))
-
-
-(defn get-board-string
-  "Printable representation of the full board"
-  [board]
-  (apply str
-         (map get-row-string
-              (partition (int (Math/sqrt (count board)))
-                         board))))
-
-
 (defn next-player
   "Returns the next player char"
   [player]
   (if (= player \X) \O \X))
 
 
-; (defn replace-nth
-;   "Replaces nth element of the lazy seq"
-;   [coll n new-value]
-;   (concat (take n coll)
-;           (list new-value)
-;           (nthnext coll (inc n))))
+(defn occupied?
+  "Is this cell already belongs to some player?"
+  [n board]
+  (nth board n))
 
 
 (defn make-move
@@ -126,7 +110,8 @@
 
 
 (defn same-player?
-  "Is this path completely filled by one player?"
+  "Is this path completely filled by one player?
+  Returns nil or player"
   [path]
   (if (some nil? path)
     false
@@ -136,26 +121,9 @@
         false))))
 
 
-; (defn win?
-;   "Does this board have a winning path?"
-;   [board]
-;   (some win-cell? (:paths board)))
-
-
-(defn -main
-  [size]
-  (println "Welcome to tic-tac-toe!")
-  (loop [n nil
-         player \X
-         board (gen-board size)]
-    (let [new-board (if n
-                      (make-move n player board)
-                      board)]
-      (print (get-board-string new-board))
-      (when-not (no-more-moves? new-board)
-        (print (str "Player " (next-player player) ". Select a cell: "))
-        (flush)
-        (recur (read-string (read-line))
-               (next-player player)
-               new-board)))))
+(defn win?
+  "Does this board have a winning path?
+  Returns nil or player"
+  [board]
+  (some same-player? (get-board-paths board)))
 
