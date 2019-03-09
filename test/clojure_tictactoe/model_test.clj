@@ -1,6 +1,6 @@
-(ns clojure-tictactoe.core-test
+(ns clojure-tictactoe.model-test
   (:require [clojure.test :refer :all]
-            [clojure-tictactoe.core :refer :all]))
+            [clojure-tictactoe.model :refer :all]))
 
 (deftest core-tests
   (testing "Testing board generation"

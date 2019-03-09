@@ -1,6 +1,6 @@
 (ns clojure-tictactoe.cli-test
   (:require [clojure.test :refer :all]
-            [clojure-tictactoe.core :refer :all]
+            [clojure-tictactoe.model :refer :all]
             [clojure-tictactoe.cli :refer :all]))
 
 (deftest core-tests

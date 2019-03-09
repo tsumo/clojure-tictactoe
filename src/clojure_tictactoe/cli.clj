@@ -1,5 +1,5 @@
 (ns clojure-tictactoe.cli
-  (:require [clojure-tictactoe.core :refer :all]))
+  (:require [clojure-tictactoe.model :refer :all]))
 
 
 (defn get-row-string
@@ -30,21 +30,13 @@
   (cond
     (win? board) (println (str "Player " (win? board) " have won!"))
     (no-more-moves? board) (println "It's a draw!")
-    true (do
-           (print (str "Player " player ". Select a cell: "))
-           (flush)
-           (let [move (read-string (read-line))
-                 new-board (make-move move player board)]
-             (if (occupied? move board)
-               (do (println "This cell is taken. Try again!")
-                   (recur player board))
-               (recur (next-player player) new-board))))))
-
-
-(defn tic-tac-toe-cli
-  "Console game entry point"
-  ([]
-   (cli-loop \X (gen-board 3)))
-  ([size]
-   (cli-loop \X (gen-board size))))
+    :else (do
+            (print (str "Player " player ". Select a cell: "))
+            (flush)
+            (let [move (read-string (read-line))
+                  new-board (make-move move player board)]
+              (if (occupied? move board)
+                (do (println "This cell is taken. Try again!")
+                    (recur player board))
+                (recur (next-player player) new-board))))))
 

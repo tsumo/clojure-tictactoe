@@ -1,3 +1,6 @@
 # Introduction to clojure-tictactoe
 
-TODO: write [great documentation](http://jacobian.org/writing/what-to-write/)
+File `model.clj` contains pure game logic.
+
+All io operations are in the `cli.clj`.
+
