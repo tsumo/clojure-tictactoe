@@ -1,6 +1,6 @@
-(ns clojure-tictactoe.core
-  (:require [clojure-tictactoe.model :refer :all]
-            [clojure-tictactoe.cli :refer :all])
+(ns tictactoe.core
+  (:require [tictactoe.model :refer :all]
+            [tictactoe.cli :refer :all])
   (:gen-class))
 
 

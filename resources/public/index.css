@@ -1,0 +1,16 @@
+.app-wrapper {
+  text-align: center;
+}
+
+.board-cell {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  color: #444;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px -1px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  vertical-align: middle;
+  padding: 5px;
+  margin: 5px;
+}

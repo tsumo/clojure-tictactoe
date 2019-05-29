@@ -10,3 +10,6 @@ pom.xml.asc
 /.nrepl-port
 .hgignore
 .hg/
+.rebel_readline_history
+figwheel_server.log
+/resources/public/js/

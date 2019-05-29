@@ -1,5 +1,5 @@
-(ns clojure-tictactoe.cli
-  (:require [clojure-tictactoe.model :refer :all]))
+(ns tictactoe.cli
+  (:require [tictactoe.model :refer :all]))
 
 
 (defn get-row-string
