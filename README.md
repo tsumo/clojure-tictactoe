@@ -1,6 +1,6 @@
 # clojure-tictactoe
 
-Simple CLI tic-tac-toe in clojure
+Simple tic-tac-toe in clojure
 
 ## Usage
 
