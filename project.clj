@@ -29,7 +29,7 @@
                                                   :elide-asserts true
                                                   :pretty-print false}}}}}}
 
-  :figwheel {:repl true
+  :figwheel {:repl false
              :css-dirs ["resources/public"]}
 
   :clean-targets ^{:protect false} ["resources/public/js"]
@@ -38,7 +38,7 @@
                                 :compiler     {:output-dir "resources/public/js"
                                                :output-to "resources/public/js/client.js"}}}}
 
-  ; :main ^:skip-aot tictactoe.core
+  :main ^:skip-aot tictactoe.core
 
-  ; :repl-options {:init-ns tictactoe.core}
-  )
+  :repl-options {:init-ns tictactoe.core})
+

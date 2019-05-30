@@ -4,11 +4,12 @@ Simple CLI tic-tac-toe in clojure
 
 ## Usage
 
-Do `lein run`
+Do `lein run` to start a game in console.
+Cells are marked from 0 to 8.
 
-Cells are marked from 0 to 8
+Do `lein do clean, figwheel` to start game in a browser at the `localhost:3449`.
 
-## Example game
+## Example cli game
 
 ```
 +---+ +---+ +---+

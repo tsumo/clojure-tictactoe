@@ -19,24 +19,19 @@
   :initialize
   (fn [_ _]
     {:player \X
-     :board (m/make-move
-              8 \O (m/make-move
-                     7 \X (m/make-move
-                            6 \O (m/make-move
-                                   5 \X (m/make-move
-                                          3 \X (m/make-move
-                                                 2 \O (m/make-move
-                                                        1 \X (m/make-move
-                                                               0 \O (m/gen-board 3)))))))))
+     :board (m/gen-board 3)
      :board-size 3}))
 
 
 (rf/reg-event-db
   :make-move
-  (fn [db [_ index]]
-    (assoc db
-           :board (m/make-move index (:player db) (:board db))
-           :player (m/next-player (:player db)))))
+  (fn [{:keys [player board] :as db} [_ index]]
+    (if (and (not (m/win? board))
+             (not (m/occupied? index board)))
+      (assoc db
+             :board (m/make-move index player board)
+             :player (m/next-player player))
+      db)))
 
 
 ;; -- Domino 4 - Query
@@ -54,19 +49,31 @@
     (:board db)))
 
 
+(rf/reg-sub
+  :board-size
+  (fn [db _]
+    (:board-size db)))
+
+
 ;; -- Domino 5 - View Functions
 
 
-(defn player
+(defn status
   []
-  [:h3 (str "Current player: " @(rf/subscribe [:player]))])
+  (let [board @(rf/subscribe [:board])
+        player @(rf/subscribe [:player])
+        winner (m/win? board)
+        no-moves (m/no-more-moves? board)]
+    (cond winner [:h3 (str "Winner is " winner "!")]
+          no-moves [:h3 "It's a draw!"]
+          :else [:h3 (str "Current player: " player)])))
 
 
 (defn board-row
   [row index]
   (into [:div.board-row]
         (map (fn [[index cell]]
-               [:button.board-cell
+               [:button.btn.cell-txt
                 {:on-click #(rf/dispatch [:make-move index])}
                 cell])
              row)))
@@ -76,19 +83,26 @@
   []
   (fn []
     (let [board @(rf/subscribe [:board])
-          indexed-board (map-indexed vector board)]
+          indexed-board (map-indexed vector board)
+          board-size @(rf/subscribe [:board-size])]
       [:div.board-wrapper
        (into [:div.board]
              (map board-row
-                  (partition 3 indexed-board)))])))
+                  (partition board-size indexed-board)))])))
+
+
+(defn reset
+  []
+  [:button.btn.reset-txt {:on-click #(rf/dispatch [:initialize])} "Reset"])
 
 
 (defn ui
   []
   [:div.app-wrapper
    [:h1.app-title "Tic-Tac-Toe"]
-   [player]
-   [board]])
+   [status]
+   [board]
+   [reset]])
 
 
 ;; -- Entry Point
