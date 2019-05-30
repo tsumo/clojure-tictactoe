@@ -1,4 +1,4 @@
-(defproject clojure-tictactoe "1.0.0"
+(defproject clojure-tictactoe "1.1.0"
   :description "Tic-tac-toe in console"
 
   :url "https://github.com/tsumo"
