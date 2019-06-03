@@ -1,6 +1,8 @@
 # clojure-tictactoe
 
-Simple tic-tac-toe in clojure
+Simple tic-tac-toe in clojure.
+
+[Try it out in the browser](https://tsumo.xyz/tic-tac-toe/).
 
 ## Usage
 
