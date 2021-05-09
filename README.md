@@ -2,7 +2,7 @@
 
 Simple tic-tac-toe in clojure.
 
-[Try it out in the browser](https://tsumo.xyz/tic-tac-toe/).
+[Try it out in the browser](https://tsumo.github.io/tic-tac-toe/).
 
 ## Usage
 
